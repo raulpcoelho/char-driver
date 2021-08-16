@@ -4,7 +4,19 @@
 #define MAJOR_NUMBER 99
 #define DRIVER_NAME "charDriver"
 
-struct file_operations f_ops;
+static int open_chardev(struct inode *inode, struct file *file);
+static int release_chardev(struct inode *inode, struct file *file);
+static ssize_t read_chardev(struct file *file, char __user *buf, size_t count, loff_t *offset);
+static ssize_t write_chardev(struct file *file, const char __user *buf, size_t count, loff_t *offset);
+
+struct file_operations f_ops = {
+    .owner   = THIS_MODULE,
+    .open    = open_chardev,
+    .release = release_chardev, 
+    .read    = read_chardev,
+    .write   = write_chardev
+
+};
 
 static int num = 10;
 
@@ -28,6 +40,28 @@ static void hello_exit(void) {
     unregister_chrdev(MAJOR_NUMBER, DRIVER_NAME);
     printk("unregister_chrdev: char dev removed");
 }
+
+
+static int open_chardev(struct inode *inode, struct file *file) {
+    static int device_access_cnt = 0;
+    printk("Device accessed %d times.\n", ++device_access_cnt);
+    return 0;
+}
+
+static int release_chardev(struct inode *inode, struct file *file) {
+    printk("Device released.\n");
+    return 0;
+}
+
+static ssize_t read_chardev(struct file *file, char __user *buf, size_t count, loff_t *offset) {
+    printk("Reading...\n");
+    return 0;
+}
+static ssize_t write_chardev(struct file *file, const char __user *buf, size_t count, loff_t *offset) {
+    printk("Writing...\n");
+    return 0;
+}
+
 
 module_init(hello_init);
 module_exit(hello_exit);
