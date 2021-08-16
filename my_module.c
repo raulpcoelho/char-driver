@@ -59,7 +59,7 @@ static ssize_t read_chardev(struct file *file, char __user *buf, size_t count, l
 }
 static ssize_t write_chardev(struct file *file, const char __user *buf, size_t count, loff_t *offset) {
     printk("Writing...\n");
-    return 0;
+    return count;
 }
 
 
