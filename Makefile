@@ -1,4 +1,4 @@
-obj-m     := my_module.o
+obj-m     := adv_char_driver.o
 KERNELDIR := /lib/modules/$(shell uname -r)/build	
 PWD       := $(shell pwd)
 
