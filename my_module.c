@@ -1,7 +1,7 @@
 #include <linux/module.h>
 #include <linux/fs.h>
 
-#define MAJOR_NUMBER 99
+#define MAJOR_NUMBER 91
 #define DRIVER_NAME "charDriver"
 
 static int open_chardev(struct inode *inode, struct file *file);
