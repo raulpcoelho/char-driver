@@ -30,8 +30,8 @@ struct class *char_class = NULL;
 struct cdev char_dev;
 
 static int uevent(struct device *dev, struct kobj_uevent_env *env) {
-	add_uevent_var(env, "DEVMODE=%#o", 0666);
-	return 0;
+    add_uevent_var(env, "DEVMODE=%#o", 0666);
+    return 0;
 }
 
 
@@ -39,7 +39,7 @@ static int hello_init(void) {
     int err;
     printk(KERN_ALERT "Hello!!");
 
-	err = alloc_chrdev_region(&device, 0, 1, DRIVER_NAME);
+    err = alloc_chrdev_region(&device, 0, 1, DRIVER_NAME);
     if (err)
         printk("alloc_chrdev_region: error.\n");
     else
@@ -80,53 +80,53 @@ static int release_chardev(struct inode *inode, struct file *file) {
 }
 
 static ssize_t read_chardev(struct file *file, char __user *buf, size_t count, loff_t *offset) {
-	size_t stringlen = strlen(driver_mem);
-	static int read = 0;
+    size_t stringlen = strlen(driver_mem);
+    static int read = 0;
 
-	if (read) {
-		read = 0;
-		return 0;
-	}
+    if (read) {
+        read = 0;
+        return 0;
+    }
 
-	if (count > stringlen)
-		count = stringlen;
+    if (count > stringlen)
+        count = stringlen;  
 
-	if (copy_to_user(buf, driver_mem, count))
-		return -EFAULT;
-	else {
-		read = 1;
-		printk("Data copied to user space.\n");
-	    printk("Reading done.\n");
-	}
+    if (copy_to_user(buf, driver_mem, count))
+        return -EFAULT;
+    else {
+        read = 1;
+        printk("Data copied to user space.\n");
+        printk("Reading done.\n");
+    }
 
     return count;
 }
 static ssize_t write_chardev(struct file *file, const char __user *buf, size_t count, loff_t *offset) {
-	char tmp[BUFFER_LEN + 1];
+    char tmp[BUFFER_LEN + 1];
     static int pos = 0;
-	int err = 0;
-	int bytes;
+    int err = 0;
+    int bytes;
     int i;
 
-	if (count < BUFFER_LEN)
-		bytes = count;
+    if (count < BUFFER_LEN) 
+        bytes = count;
 	else 
-		bytes = BUFFER_LEN;
+        bytes = BUFFER_LEN;
 
 
-	err = copy_from_user(tmp, buf, bytes);
+    err = copy_from_user(tmp, buf, bytes);
 
-	if (err) 
-		printk("Error while copying bytes from user space. Error cnt: %d\n", err);
+    if (err) 
+        printk("Error while copying bytes from user space. Error cnt: %d\n", err);
     i = 0;
     while (i < bytes) {
         driver_mem[pos++] = tmp[i++];
         if (pos == BUFFER_LEN)
             pos = 0;        
     }
-    
+
     tmp[bytes] = '\0';
-	printk("Copied from user space: %s", tmp);
+    printk("Copied from user space: %s", tmp);
     printk("Writing done.\n");
     return bytes;
 }
