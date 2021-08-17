@@ -8,7 +8,7 @@ f.close()
 
 
 f = open("/dev/mychardev", "w")
-f.write("hello")
+f.write("world")
 f.close()
 f = open("/dev/mychardev", "r")
 string = f.read()
@@ -16,7 +16,7 @@ print(string)
 
 
 f = open("/dev/mychardev", "w")
-f.write("hello")
+f.write("testing")
 f.close()
 f = open("/dev/mychardev", "r")
 string = f.read()

@@ -5,9 +5,8 @@
 #include <linux/cdev.h>
 #include <linux/device.h>
 
-#define MAJOR_NUMBER 91
 #define DRIVER_NAME "charDriver"
-#define BUFFER_LEN 21
+#define BUFFER_LEN 8
 #define DEVICE_NAME "mychardev"
 
 char driver_mem[BUFFER_LEN];
@@ -103,9 +102,11 @@ static ssize_t read_chardev(struct file *file, char __user *buf, size_t count, l
     return count;
 }
 static ssize_t write_chardev(struct file *file, const char __user *buf, size_t count, loff_t *offset) {
-	
+	char tmp[BUFFER_LEN];
+    static int pos = 0;
 	int err = 0;
 	int bytes;
+    int i;
 
 	if (count < BUFFER_LEN)
 		bytes = count;
@@ -113,14 +114,21 @@ static ssize_t write_chardev(struct file *file, const char __user *buf, size_t c
 		bytes = BUFFER_LEN;
 
 
-	err = copy_from_user(driver_mem, buf, bytes);
+	err = copy_from_user(tmp, buf, bytes);
 
 	//driver_mem[bytes - 1] = '\0'; //end of string
 
 	if (err) 
 		printk("Error while copying bytes from user space. Error cnt: %d\n", err);
+    i = 0;
+    while (i < bytes) {
+        driver_mem[pos++] = tmp[i++];
+        if (pos == BUFFER_LEN - 1)
+            pos = 0;        
+    }
+    
 
-	printk("Copied from user space: %s", driver_mem);
+	printk("Copied from user space: %s", tmp);
     printk("Writing done.\n");
     return bytes;
 }
