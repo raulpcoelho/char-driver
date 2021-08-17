@@ -9,7 +9,7 @@
 #define BUFFER_LEN 8
 #define DEVICE_NAME "mychardev"
 
-char driver_mem[BUFFER_LEN];
+char driver_mem[BUFFER_LEN + 1];
 
 static int open_chardev(struct inode *inode, struct file *file);
 static int release_chardev(struct inode *inode, struct file *file);
@@ -102,7 +102,7 @@ static ssize_t read_chardev(struct file *file, char __user *buf, size_t count, l
     return count;
 }
 static ssize_t write_chardev(struct file *file, const char __user *buf, size_t count, loff_t *offset) {
-	char tmp[BUFFER_LEN];
+	char tmp[BUFFER_LEN + 1];
     static int pos = 0;
 	int err = 0;
 	int bytes;
@@ -116,18 +116,16 @@ static ssize_t write_chardev(struct file *file, const char __user *buf, size_t c
 
 	err = copy_from_user(tmp, buf, bytes);
 
-	//driver_mem[bytes - 1] = '\0'; //end of string
-
 	if (err) 
 		printk("Error while copying bytes from user space. Error cnt: %d\n", err);
     i = 0;
     while (i < bytes) {
         driver_mem[pos++] = tmp[i++];
-        if (pos == BUFFER_LEN - 1)
+        if (pos == BUFFER_LEN)
             pos = 0;        
     }
     
-
+    tmp[bytes] = '\0';
 	printk("Copied from user space: %s", tmp);
     printk("Writing done.\n");
     return bytes;
