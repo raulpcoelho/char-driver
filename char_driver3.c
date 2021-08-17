@@ -7,8 +7,10 @@
 
 #define MAJOR_NUMBER 91
 #define DRIVER_NAME "charDriver"
-#define BUFFER_LEN 20
+#define BUFFER_LEN 21
 #define DEVICE_NAME "mychardev"
+
+char driver_mem[BUFFER_LEN];
 
 static int open_chardev(struct inode *inode, struct file *file);
 static int release_chardev(struct inode *inode, struct file *file);
@@ -79,8 +81,7 @@ static int release_chardev(struct inode *inode, struct file *file) {
 }
 
 static ssize_t read_chardev(struct file *file, char __user *buf, size_t count, loff_t *offset) {
-	const char *string = "Read function from driver.\n";
-	size_t stringlen = strlen(string);
+	size_t stringlen = strlen(driver_mem);
 	static int read = 0;
 
 	if (read) {
@@ -91,7 +92,7 @@ static ssize_t read_chardev(struct file *file, char __user *buf, size_t count, l
 	if (count > stringlen)
 		count = stringlen;
 
-	if (copy_to_user(buf, string, count))
+	if (copy_to_user(buf, driver_mem, count))
 		return -EFAULT;
 	else {
 		read = 1;
@@ -102,7 +103,7 @@ static ssize_t read_chardev(struct file *file, char __user *buf, size_t count, l
     return count;
 }
 static ssize_t write_chardev(struct file *file, const char __user *buf, size_t count, loff_t *offset) {
-	char driver_mem[BUFFER_LEN];
+	
 	int err = 0;
 	int bytes;
 
@@ -111,13 +112,15 @@ static ssize_t write_chardev(struct file *file, const char __user *buf, size_t c
 	else 
 		bytes = BUFFER_LEN;
 
+
 	err = copy_from_user(driver_mem, buf, bytes);
+
+	//driver_mem[bytes - 1] = '\0'; //end of string
 
 	if (err) 
 		printk("Error while copying bytes from user space. Error cnt: %d\n", err);
-	driver_mem[bytes - 1] = '\0'; //end of string
 
-	printk("Copied from user space: %s, length: %d", driver_mem, bytes - 1);
+	printk("Copied from user space: %s", driver_mem);
     printk("Writing done.\n");
     return bytes;
 }
