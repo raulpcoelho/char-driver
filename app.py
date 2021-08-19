@@ -2,7 +2,7 @@ f = open("/dev/char_device", "w")  # open
 f.write("helloworld")              # write
 f.close()                          # release
 f = open("/dev/char_device", "r")  # open
-string = f.read(10)                # read
+string = f.read()                  # read / f.read() with no parameters means reading the whole file
 f.close()                          # release
 print(string)                      # helloworld 
 
