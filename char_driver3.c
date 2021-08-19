@@ -6,7 +6,7 @@
 #include <linux/device.h>
 
 #define DRIVER_NAME "charDriver"
-#define BUFFER_LEN 8
+#define BUFFER_LEN 20
 #define DEVICE_NAME "mychardev"
 
 char driver_mem[BUFFER_LEN + 1];
