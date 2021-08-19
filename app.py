@@ -1,31 +1,31 @@
 f = open("/dev/char_device", "w")  # open
-f.write("helloworld")  # write
-f.close()  # release
+f.write("helloworld")              # write
+f.close()                          # release
 f = open("/dev/char_device", "r")  # open
-string = f.read()  # read
-f.close()  # release
-print(string)  # helloworld
+string = f.read(10)                # read
+f.close()                          # release
+print(string)                      # helloworld 
 
 f = open("/dev/char_device", "w")  # open
-f.write("testing")  # write
-f.close()  # release
+f.write("testing")                 # write
+f.close()                          # release
 f = open("/dev/char_device", "r")  # open
-string = f.read()  # read
-f.close()  # release
-print(string)  # helloworldtesting
+string = f.read(17)                # read
+f.close()                          # release
+print(string)                      # helloworldtesting
 
 f = open("/dev/char_device", "w")  # open
-f.write("driver")  # write
-f.close()  # release
+f.write("driver")                  # write
+f.close()                          # release
 f = open("/dev/char_device", "r")  # open
-string = f.read()  # read
-f.close()  # release
-print(string)  # verloworldtestingdri
+string = f.read(20)                # read
+f.close()                          # release
+print(string)                      # verloworldtestingdri
 
 f = open("/dev/char_device", "w")  # open
-f.write("ABCD")  # write
-f.close()  # release
+f.write("ABCD")                    # write
+f.close()                          # release
 f = open("/dev/char_device", "r")  # open
-string = f.read()  # read
-f.close()  # release
-print(string)  # verABCDrldtestingdri
+string = f.read(20)                # read
+f.close()                          # release
+print(string)                      # verABCDrldtestingdri

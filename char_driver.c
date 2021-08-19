@@ -66,8 +66,8 @@ static void mod_exit(void) {
 }
 
 static int open_chardev(struct inode *inode, struct file *file) {
-    static int device_access_cnt = 0;
-    printk("Device accessed %d time(s)\n", ++device_access_cnt);
+    static int access_cnt = 0;
+    printk("Device accessed %d time(s)\n", ++access_cnt);
     printk("User ID: %d\n", current_uid().val);
     return 0;
 }
