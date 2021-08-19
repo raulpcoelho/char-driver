@@ -1,13 +1,5 @@
 f = open("/dev/mychardev", "w")         # open
-f.write("hello")                        # write
-f.close()                               # release
-f = open("/dev/mychardev", "r")         # open
-string = f.read()                       # read
-f.close()                               # release
-print(string)                           # hello
-
-f = open("/dev/mychardev", "w")         # open
-f.write("world")                        # write
+f.write("helloworld")                   # write
 f.close()                               # release
 f = open("/dev/mychardev", "r")         # open
 string = f.read()                       # read
@@ -29,3 +21,12 @@ f = open("/dev/mychardev", "r")         # open
 string = f.read()                       # read
 f.close()                               # release
 print(string)                           # verloworldtestingdri
+
+f = open("/dev/mychardev", "w")         # open
+f.write("ABCD")                         # write
+f.close()                               # release
+f = open("/dev/mychardev", "r")         # open
+string = f.read()                       # read
+f.close()                               # release
+print(string)                           # verABCDrldtestingdri
+
