@@ -1,3 +1,3 @@
 # Char Driver
 
-A char driver (C) and an application (python) that verifies the driver's functions.
+A char driver (C) and an application (python) that tests the driver's functions.
